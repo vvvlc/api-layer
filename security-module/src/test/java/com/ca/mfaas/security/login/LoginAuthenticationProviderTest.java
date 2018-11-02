@@ -42,7 +42,7 @@ public class LoginAuthenticationProviderTest {
         String token = "token";
         UsernamePasswordAuthenticationToken usernamePasswordAuthentication = new UsernamePasswordAuthenticationToken(username, password);
 
-        when(tokenService.createToken(username)).thenReturn(token);
+        when(tokenService.createToken(username, "", "")).thenReturn(token);
 
         LoginAuthenticationProvider loginAuthenticationProvider
             = new LoginAuthenticationProvider(encoder, userDetailsService, tokenService);
@@ -67,7 +67,7 @@ public class LoginAuthenticationProviderTest {
             = new LoginAuthenticationProvider(encoder, userDetailsService, tokenService);
         loginAuthenticationProvider.authenticate(usernamePasswordAuthentication);
 
-        verify(tokenService, never()).createToken(any());
+        verify(tokenService, never()).createToken(any(), any(), any());
         verify(userDetailsService).loadUserByUsername(username);
     }
 

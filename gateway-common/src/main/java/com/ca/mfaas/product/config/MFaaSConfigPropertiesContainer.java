@@ -223,6 +223,9 @@ public class MFaaSConfigPropertiesContainer {
         @NotBlank
         private String gatewayHostname;
 
+        // z/OSMF service name (used by login)
+        private String zosmfServiceName;
+
         // Timeout duration for all requests going via the gateway
         // default = 30,000 (see histrixTimeoutInMillis if changing this value)
         private Integer timeoutInMillis;

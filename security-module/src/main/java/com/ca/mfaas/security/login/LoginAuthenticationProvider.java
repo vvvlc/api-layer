@@ -47,7 +47,7 @@ public class LoginAuthenticationProvider extends DaoAuthenticationProvider {
             throw new AuthenticationServiceException("A failure occurred when authenticating", e);
         }
         String username = usernamePasswordAuthentication.getName();
-        String token = tokenService.createToken(username);
+        String token = tokenService.createToken(username, "", "");
         TokenAuthentication tokenAuthentication = new TokenAuthentication(username, token);
         tokenAuthentication.setAuthenticated(true);
         return tokenAuthentication;

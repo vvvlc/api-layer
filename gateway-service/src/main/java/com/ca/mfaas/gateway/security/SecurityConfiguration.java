@@ -9,13 +9,11 @@
  */
 package com.ca.mfaas.gateway.security;
 
-import com.ca.mfaas.product.config.MFaaSConfigPropertiesContainer;
-import com.ca.mfaas.security.gateway.GatewayLoginFilter;
-import com.ca.mfaas.security.gateway.GatewaySuccessfulLoginHandler;
+import com.ca.mfaas.security.gateway.*;
 import com.ca.mfaas.security.handler.FailedAuthenticationHandler;
 import com.ca.mfaas.security.handler.UnauthorizedHandler;
-import com.ca.mfaas.security.login.LoginAuthenticationProvider;
 import com.ca.mfaas.security.token.TokenAuthenticationProvider;
+import com.ca.mfaas.security.token.TokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
@@ -33,28 +31,32 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @ComponentScan("com.ca.mfaas.security")
 @Import(ComponentsConfiguration.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private static final String LOGIN_ENDPOINT = "/auth/login";
+    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+    private static final String QUERY_ENDPOINT = "/api/v1/auth/query";
 
     private final UnauthorizedHandler unAuthorizedHandler;
     private final GatewaySuccessfulLoginHandler successfulLoginHandler;
+    private final GatewaySuccessfulQueryHandler successfulQueryHandler;
     private final FailedAuthenticationHandler authenticationFailureHandler;
-    private final LoginAuthenticationProvider loginAuthenticationProvider;
+    private final ZosmfAuthenticationProvider loginAuthenticationProvider;
     private final TokenAuthenticationProvider tokenAuthenticationProvider;
-    private final MFaaSConfigPropertiesContainer propertiesContainer;
+    private final TokenService tokenService;
 
     public SecurityConfiguration(
         UnauthorizedHandler unAuthorizedHandler,
         GatewaySuccessfulLoginHandler successfulLoginHandler,
+        GatewaySuccessfulQueryHandler successfulQueryHandler,
         FailedAuthenticationHandler authenticationFailureHandler,
-        LoginAuthenticationProvider loginAuthenticationProvider,
+        ZosmfAuthenticationProvider loginAuthenticationProvider,
         TokenAuthenticationProvider tokenAuthenticationProvider,
-        MFaaSConfigPropertiesContainer propertiesContainer) {
+        TokenService tokenService) {
         this.unAuthorizedHandler = unAuthorizedHandler;
         this.successfulLoginHandler = successfulLoginHandler;
+        this.successfulQueryHandler = successfulQueryHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.loginAuthenticationProvider = loginAuthenticationProvider;
         this.tokenAuthenticationProvider = tokenAuthenticationProvider;
-        this.propertiesContainer = propertiesContainer;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -91,12 +93,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .addFilterBefore(loginFilter(LOGIN_ENDPOINT), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
 
+            // query endpoint
+            .and()
+            .addFilterBefore(queryFilter(QUERY_ENDPOINT), UsernamePasswordAuthenticationFilter.class)
+            .authorizeRequests()
+
             // allow login to pass through filters
             .antMatchers(HttpMethod.POST, LOGIN_ENDPOINT).permitAll();
     }
 
     private GatewayLoginFilter loginFilter(String loginEndpoint) throws Exception {
         return new GatewayLoginFilter(loginEndpoint, successfulLoginHandler, authenticationFailureHandler, authenticationManager());
+    }
+
+    private GatewayQueryFilter queryFilter(String queryEndpoint) throws Exception {
+        return new GatewayQueryFilter(queryEndpoint, successfulQueryHandler, authenticationFailureHandler, tokenService,
+            authenticationManager());
     }
 
     @Bean

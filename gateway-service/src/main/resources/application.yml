@@ -75,6 +75,7 @@ mfaas:
         trustStorePassword: ${environment.truststorePassword}
     gateway:
         gatewayHostname: ${environment.gatewayHostname}
+        zosmfServiceName: ${environment.zosmfServiceName}
         timeoutInMillis: ${environment.gatewayTimeoutInMillis:30000}
         debugHeaders: false
         histrixTimeoutInMillis: ${environment.histrixTimeoutInMillis:240000}
