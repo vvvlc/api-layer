@@ -8,6 +8,8 @@ dependencies {
     compile libraries.spring_security_config
     compile libraries.jackson_dataformat_yaml
 
+    compileOnly files('../lib/RACF.jar')
+
     compileOnly libraries.slf4j_api
     compileOnly libraries.javax_servlet_api
     compileOnly libraries.lombok

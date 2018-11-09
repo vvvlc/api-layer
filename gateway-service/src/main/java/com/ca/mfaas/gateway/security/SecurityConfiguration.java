@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final GatewaySuccessfulLoginHandler successfulLoginHandler;
     private final GatewaySuccessfulQueryHandler successfulQueryHandler;
     private final FailedAuthenticationHandler authenticationFailureHandler;
-    private final ZosmfAuthenticationProvider loginAuthenticationProvider;
+    private final SafLoginProvider loginAuthenticationProvider;
     private final TokenAuthenticationProvider tokenAuthenticationProvider;
     private final TokenService tokenService;
 
@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         GatewaySuccessfulLoginHandler successfulLoginHandler,
         GatewaySuccessfulQueryHandler successfulQueryHandler,
         FailedAuthenticationHandler authenticationFailureHandler,
-        ZosmfAuthenticationProvider loginAuthenticationProvider,
+        SafLoginProvider loginAuthenticationProvider,
         TokenAuthenticationProvider tokenAuthenticationProvider,
         TokenService tokenService) {
         this.unAuthorizedHandler = unAuthorizedHandler;
