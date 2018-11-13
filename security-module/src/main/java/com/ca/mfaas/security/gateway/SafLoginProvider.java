@@ -12,11 +12,10 @@ package com.ca.mfaas.security.gateway;
 import com.ca.mfaas.security.login.InvalidUserException;
 import com.ca.mfaas.security.token.TokenAuthentication;
 import com.ca.mfaas.security.token.TokenService;
-import com.ibm.os390.security.PlatformReturned;
-import com.ibm.os390.security.PlatformSecurityServer;
-import com.ibm.os390.security.PlatformUser;
+import com.ibm.os390.security.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -35,15 +34,40 @@ public class SafLoginProvider implements AuthenticationProvider {
         String userId = authentication.getPrincipal().toString();
         String password = authentication.getCredentials().toString();
 
-
-        if(PlatformSecurityServer.isActive()) {
-            log.debug("Server is running.");
+        // check if Security Server is active
+        if (PlatformSecurityServer.isActive())
+            log.debug("Security Server is active.");
+        else {
+            log.error("Error: Security Server is not active.");
+            throw new AuthenticationServiceException("Error: Security Server is not active.");
         }
 
-        PlatformReturned pr = PlatformUser.authenticate(userId, password);
+        // check if resource type 'FACILITY' is active
+        if (PlatformSecurityServer.resourceTypeIsActive("FACILITY"))
+            log.debug("FACILITY is active.");
+        else {
+            log.error("Error: FACILITY is not active.");
+            throw new AuthenticationServiceException("Error: FACILITY is not active.");
+        }
 
-        if (pr != null) {
+        PlatformReturned pr1 = PlatformAccessControl.checkPermission("FACILITY", "BPX.SERVER1", PlatformAccessLevel.READ);
+
+        // find out if current user has has READ access to the resource named BPX.SERVER of resource type FACILITY
+        PlatformReturned pr = PlatformAccessControl.checkPermission("FACILITY", "BPX.SERVER", PlatformAccessLevel.READ);
+        if (pr == null)
+            log.debug("Server has READ access to the resource named BPX.SERVER of resource type FACILITY.");
+        else {
+            log.error("Server does not have READ access to the resource named BPX.SERVER of resource type FACILITY.");
             log.debug("SAF ERROR {}: success = {}\n    errno = {}\n    errno2 = {}\n    errnoMsg = {}\n    stringRet = {}\n    objectRet = {}",
+                pr.success, pr.errno, pr.errno2, pr.errnoMsg, pr.stringRet, pr.objectRet);
+        }
+
+        //authenticate user
+        pr = PlatformUser.authenticate(userId, password);
+        if (pr == null) {
+            log.debug("User {} successfully authenticated.", userId);
+        } else {
+            log.error("SAF ERROR {}: success = {}\n    errno = {}\n    errno2 = {}\n    errnoMsg = {}\n    stringRet = {}\n    objectRet = {}",
                 pr.success, pr.errno, pr.errno2, pr.errnoMsg, pr.stringRet, pr.objectRet);
             throw new InvalidUserException("Username or password are invalid.");
         }
