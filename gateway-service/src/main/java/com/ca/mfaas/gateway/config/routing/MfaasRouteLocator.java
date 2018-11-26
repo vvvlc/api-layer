@@ -22,14 +22,7 @@ import org.springframework.cloud.netflix.zuul.filters.discovery.ServiceRouteMapp
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 @Slf4j
 class MfaasRouteLocator extends DiscoveryClientRouteLocator {
@@ -139,7 +132,7 @@ class MfaasRouteLocator extends DiscoveryClientRouteLocator {
                     if (url[2].equals(RoutedServices.GATEWAY_URL_PARAMETER)) {
                         String gatewayURL = FilterUtils.removeFirstAndLastSlash(metadata.getValue());
                         routeMap.put(url[1], gatewayURL);
-                        keys.add("/" + gatewayURL + "/" + mapRouteToService(serviceId) + "/**");
+                        keys.add("/" + mapRouteToService(serviceId) + "/" + gatewayURL + "/**");
                     }
 
                     if (url[2].equals(RoutedServices.SERVICE_URL_PARAMETER) && routeMap.containsKey(url[1])) {

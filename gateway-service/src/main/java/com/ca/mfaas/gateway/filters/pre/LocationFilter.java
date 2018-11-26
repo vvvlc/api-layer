@@ -56,10 +56,10 @@ public class LocationFilter extends ZuulFilter implements RoutedServicesUser {
 
             if (routedServices != null) {
                 @SuppressWarnings("squid:S2259")
-                int i = proxy.lastIndexOf('/');
+                int i = proxy.indexOf('/');
 
                 if (i > 0) {
-                    String route = proxy.substring(0, i);
+                    String route = proxy.substring(i + 1);
                     String originalPath = normalizeOriginalPath(routedServices.findServiceByGatewayUrl(route).getServiceUrl());
                     context.set(REQUEST_URI_KEY, originalPath + requestPath);
                     log.debug("Routing: The request was routed to {}", originalPath + requestPath);

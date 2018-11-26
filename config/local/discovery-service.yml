@@ -8,7 +8,7 @@ apiml:
     discovery:
         staticApiDefinitionsDirectory: config/local/api-defs
     security:
-        verifySslCertificatesOfServices: true
+        verifySslCertificatesOfServices: false
 
 spring:
     output:
