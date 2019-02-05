@@ -14,6 +14,7 @@ export default class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
+            error: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -25,9 +26,8 @@ export default class Login extends React.Component {
     }
 
     isDisabled = () => {
-        const { username, password } = this.state;
         const { isFetching } = this.props;
-        return !(username.trim().length > 0 && password.trim().length > 0 && !isFetching);
+        return isFetching;
     };
 
     handleError = error => {
@@ -68,11 +68,13 @@ export default class Login extends React.Component {
         const { login } = this.props;
         if (username && password) {
             login({ username, password });
+        } else {
+            this.setState({error: 'You have to provide credentials.'})
         }
     }
 
     render() {
-        const { username, password } = this.state;
+        const { username, password, error } = this.state;
         const { authentication, isFetching } = this.props;
         let messageText;
         if (
@@ -82,6 +84,8 @@ export default class Login extends React.Component {
             authentication.error !== null
         ) {
             messageText = this.handleError(authentication.error);
+        } else if (error) {
+            messageText = error;
         }
         return (
             <div className="login-object">
