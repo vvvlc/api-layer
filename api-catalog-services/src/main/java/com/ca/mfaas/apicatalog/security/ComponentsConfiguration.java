@@ -9,45 +9,22 @@
  */
 package com.ca.mfaas.apicatalog.security;
 
-import com.ca.mfaas.security.token.CookieConfiguration;
-import com.ca.mfaas.security.token.TokenServiceConfiguration;
-import org.springframework.beans.factory.annotation.Value;
+import com.ca.apiml.security.config.SecurityConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * Registers security related beans
+ */
 @Configuration
 public class ComponentsConfiguration {
 
+    /**
+     * Security configuration
+     */
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
-    }
-
-    @Bean
-    public TokenServiceConfiguration tokenServiceConfiguration() {
-        String secret = "secret";
-        long expirationInSeconds = 60 * 60 * 12L; // 12 hours
-        String issuer = "api-catalog-services";
-
-        return TokenServiceConfiguration.builder()
-            .secret(secret)
-            .expirationInSeconds(expirationInSeconds)
-            .issuer(issuer)
-            .shortTtlUsername("expire")
-            .shortTtlExpiration(1)
-            .build();
-    }
-
-    @Bean
-    public CookieConfiguration cookieConfiguration(@Value("${security.cookie.maxAge:86400}") Integer maxAge,
-                                                   @Value("${security.cookie.secure:true}") Boolean secure) {
-        return CookieConfiguration.builder()
-            .name("apimlAuthenticationToken")
-            .secure(secure)
-            .path("/")
-            .comment("API Catalog security token")
-            .maxAge(maxAge)
-            .build();
+    public SecurityConfigurationProperties securityConfigurationProperties() {
+        return new SecurityConfigurationProperties();
     }
 }

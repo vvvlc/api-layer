@@ -216,6 +216,7 @@ pipeline {
                         }
                     }
                 }
+
                 stage('Publish UI test results') {
                     steps {
                         publishHTML(target: [
