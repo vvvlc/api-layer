@@ -26,8 +26,6 @@ java -Xms32m -Xmx256m -Xquickstart \
     -Dspring.profiles.active=https \
     -Dspring.profiles.include= \
     -Dserver.address=0.0.0.0 \
-    -Dapiml.discovery.userid=eureka \
-    -Dapiml.discovery.password=password \
     -Dapiml.discovery.allPeersUrls=https://**HOSTNAME**:**DISCOVERY_PORT**/eureka/ \
     -Dapiml.service.hostname=**HOSTNAME** \
     -Dapiml.service.port=**DISCOVERY_PORT** \

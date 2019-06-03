@@ -6,8 +6,6 @@ IJO="$IJO -Denvironment.discoveryLocations=${{PFX}}_EUREKA"
 IJO="$IJO -Denvironment.ipAddress=${{PFX}}_{{SYSN}}_IP_ADDRESS"
 IJO="$IJO -Denvironment.preferIpAddress=${{PFX}}_PREFER_IP_ADDRESS"
 IJO="$IJO -Denvironment.gatewayHostname=${{PFX}}_GATEWAY_HOSTNAME"
-IJO="$IJO -Denvironment.eurekaUserId=${{PFX}}_DISCOVERY_SERVICE_USERID"
-IJO="$IJO -Denvironment.eurekaPassword=${{PFX}}_DISCOVERY_SERVICE_PASSWORD"
 
 # SSL configuration:
 IJO="$IJO -Denvironment.truststore=${{PFX}}_GW_SSL_TRUST_STORE"

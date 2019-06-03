@@ -22,8 +22,6 @@ java -Xms16m -Xmx512m -Dibm.serversocket.recover=true -Dfile.encoding=UTF-8 \
     -Djava.io.tmpdir=/tmp -Xquickstart -Denvironment.hostname=**HOSTNAME** -Denvironment.port=**CATALOG_PORT**  \
     -Denvironment.discoveryLocations=https://**HOSTNAME**:**DISCOVERY_PORT**/eureka/ -Denvironment.ipAddress=**IPADDRESS** \
     -Denvironment.preferIpAddress=true -Denvironment.gatewayHostname=**HOSTNAME** \
-    -Denvironment.eurekaUserId=eureka \
-    -Denvironment.eurekaPassword=password \
     -Dapiml.security.auth.zosmfServiceId=zosmf \
     -Dapiml.security.ssl.verifySslCertificatesOfServices=**VERIFY_CERTIFICATES** \
     -Dspring.profiles.include= \
