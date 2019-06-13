@@ -36,6 +36,7 @@ dependencies {
     compile(project(':gateway-common'))
     compile(project(':integration-enabler-spring-v2'))
     compile(project(':security-service-client-spring'))
+    compile('io.micrometer:micrometer-registry-prometheus')
 
     compile libraries.spring_cloud_starter_zuul
     compile libraries.spring_boot_starter_actuator

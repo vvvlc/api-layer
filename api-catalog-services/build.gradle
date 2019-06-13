@@ -51,6 +51,8 @@ dependencies {
     compile libraries.spring_boot_starter_thymeleaf
     compile libraries.apache_velocity
 
+    compile('io.micrometer:micrometer-registry-prometheus')
+
     testCompile libraries.rest_assured
     testCompile libraries.spring_mock_mvc
     testCompile libraries.lombok

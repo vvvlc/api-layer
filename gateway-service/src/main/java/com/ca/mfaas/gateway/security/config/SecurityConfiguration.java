@@ -99,7 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             // endpoint protection
             .and()
             .authorizeRequests()
-            .antMatchers("/application/health", "/application/info").permitAll()
+            .antMatchers("/application/health", "/application/info", "/application/prometheus").permitAll()
             .antMatchers("/application/**").authenticated()
 
             // add filters - login + query

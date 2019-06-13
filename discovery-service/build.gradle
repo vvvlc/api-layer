@@ -40,6 +40,7 @@ dependencies {
     compile libraries.spring_cloud_starter_eureka_server
     compile libraries.jackson_dataformat_yaml
     compile libraries.swagger_annotations
+    compile('io.micrometer:micrometer-registry-prometheus')
 
     compileOnly libraries.lombok
 

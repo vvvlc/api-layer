@@ -132,7 +132,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .addFilterAfter(headerTokenFilter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
             .antMatchers("/containers/**").authenticated()
-            .antMatchers("/apidoc/**").authenticated();
+            .antMatchers("/apidoc/**").authenticated()
+            .antMatchers("/application/health", "/application/info", "/application/prometheus").permitAll();
     }
 
     private TokenFilter headerTokenFilter() throws Exception {
