@@ -40,6 +40,8 @@ apiml:
             jwtKeyAlias: jwtsecret
 
 spring:
+    profiles:
+        include: diag
     application:
         name: ${apiml.service.id}
     cloud:
