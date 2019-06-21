@@ -7,7 +7,7 @@ Discovery service can register existing REST APIs without requiring them to be E
 The definitions of such services are provided by YAML files in a directories that can be set using
 the `apiml.discovery.staticApiDefinitionsDirectories` property. For example:
 
-    -Dapiml.discovery.staticApiDefinitionsDirectories=config/local/api-defs;user/api-layer/config
+    -Dapiml.discovery.staticApiDefinitionsDirectories=config/local/api-defs,user/api-layer/config
 
 The `config/local/api-defs` is the directory when the services are started on localhost.    
 

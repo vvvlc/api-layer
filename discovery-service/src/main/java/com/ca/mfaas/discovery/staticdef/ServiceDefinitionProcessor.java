@@ -49,7 +49,7 @@ public class ServiceDefinitionProcessor {
         List<InstanceInfo> instances = new ArrayList<>();
 
         if (staticApiDefinitionsDirectories != null && !staticApiDefinitionsDirectories.isEmpty()) {
-            String[] directories = staticApiDefinitionsDirectories.split(";");
+            String[] directories = staticApiDefinitionsDirectories.split(",");
             Arrays.stream(directories)
                 .filter(s -> !s.isEmpty())
                 .map(File::new)
