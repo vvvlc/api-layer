@@ -31,7 +31,7 @@ SAN="SAN=dns:**HOSTNAME**,ip:**IPADDRESS**,dns:localhost.localdomain,dns:localho
 
 if [[ -z "**EXTERNAL_CERTIFICATE**" ]] || [[ -z "**EXTERNAL_CERTIFICATE_ALIAS**" ]] || [[ -z "**EXTERNAL_CERTIFICATE_AUTHORITIES**" ]]; then
   if [[ -z "**EXTERNAL_CERTIFICATE**" ]] && [[ -z "**EXTERNAL_CERTIFICATE_ALIAS**" ]] && [[ -z "**EXTERNAL_CERTIFICATE_AUTHORITIES**" ]]; then
-    scripts/apiml_cm.sh --verbose --log $LOG_FILE --action setup --service-ext ${SAN}
+    scripts/apiml_cm.sh --verbose --log $LOG_FILE --action setup --zosmf-keyring **ZOSMF_KEYRING** --zosmf-userid **ZOSMF_USER** --service-ext ${SAN}
     RC=$?
     echo "apiml_cm.sh --action setup returned: $RC" >> $LOG_FILE
   else
@@ -48,7 +48,8 @@ else
   done
 
   scripts/apiml_cm.sh --verbose --log $LOG_FILE --action setup --service-ext ${SAN} \
-    --external-certificate **EXTERNAL_CERTIFICATE** --external-certificate-alias **EXTERNAL_CERTIFICATE_ALIAS** ${EXT_CA_PARM}
+    --external-certificate **EXTERNAL_CERTIFICATE** --external-certificate-alias **EXTERNAL_CERTIFICATE_ALIAS** \
+    --zosmf-keyring **ZOSMF_KEYRING** --zosmf-userid **ZOSMF_USER** ${EXT_CA_PARM}
   RC=$?
 
   echo "apiml_cm.sh --action setup returned: $RC" >> $LOG_FILE
@@ -61,7 +62,7 @@ if [ "$RC" -ne "0" ]; then
 fi
 
 if [[ "**VERIFY_CERTIFICATES**" == "true" ]]; then
-  scripts/apiml_cm.sh --verbose --log $LOG_FILE --action trust-zosmf
+  scripts/apiml_cm.sh --verbose --log $LOG_FILE --action trust-zosmf --zosmf-keyring **ZOSMF_KEYRING** --zosmf-userid **ZOSMF_USER**
   RC=$?
 
   echo "apiml_cm.sh --action trust-zosmf returned: $RC" >> $LOG_FILE
